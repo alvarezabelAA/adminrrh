@@ -15,15 +15,14 @@ router.get('/', async (req, res) => {
 
       const queryParams = [];
 
-      // Agregar filtros condicionalmente
       if (id_pais) {
           query += ` WHERE p.id = ?`;
-          queryParams.push(id_pais);  // Añadir id_pais al array de parámetros
+          queryParams.push(id_pais);
       }
 
       if (id_departamento) {
           query += id_pais ? ` AND d.id = ?` : ` WHERE d.id = ?`;
-          queryParams.push(id_departamento);  // Añadir id_departamento al array de parámetros
+          queryParams.push(id_departamento);
       }
 
       connection.query(query, queryParams, (err, results) => {
@@ -36,17 +35,13 @@ router.get('/', async (req, res) => {
 });
 
 
-// POST: Agregar un municipio
 router.post('/', async (req, res) => {
   try {
       const { nombre, departamento_id } = req.body;
       console.log(nombre, departamento_id);
-      // Validar que el nombre no esté vacío o sea demasiado corto
       if (!nombre || nombre.length < 3) {
           return res.status(400).json({ message: 'El nombre es obligatorio y debe tener al menos 3 caracteres.' });
       }
-
-      // Verificar si el departamento_id existe en la tabla de departamentos
       const checkDepartmentQuery = 'SELECT id FROM departamentos WHERE id = ?';
       connection.query(checkDepartmentQuery, [departamento_id], (err, departmentResults) => {
           if (err) {
@@ -55,8 +50,6 @@ router.post('/', async (req, res) => {
           if (departmentResults.length === 0) {
               return res.status(400).json({ message: 'El departamento especificado no existe' });
           }
-
-          // Si el departamento existe, proceder a insertar el municipio
           const query = 'INSERT INTO municipios (nombre, departamento_id) VALUES (?, ?)';
           connection.query(query, [nombre, departamento_id], (err, results) => {
               if (err) throw err;
@@ -74,13 +67,9 @@ router.put('/:id', async (req, res) => {
   try {
       const { nombre, departamento_id } = req.body;
       const { id } = req.params;
-
-      // Validar que el nombre no esté vacío o sea demasiado corto
       if (!nombre || nombre.length < 3) {
           return res.status(400).json({ message: 'El nombre es obligatorio y debe tener al menos 3 caracteres.' });
       }
-
-      // Verificar si el departamento_id existe en la tabla de departamentos
       const checkDepartmentQuery = 'SELECT id FROM departamentos WHERE id = ?';
       connection.query(checkDepartmentQuery, [departamento_id], (err, departmentResults) => {
           if (err) {
@@ -89,8 +78,6 @@ router.put('/:id', async (req, res) => {
           if (departmentResults.length === 0) {
               return res.status(400).json({ message: 'El departamento especificado no existe' });
           }
-
-          // Si el departamento existe, proceder con la actualización del municipio
           const query = 'UPDATE municipios SET nombre = ?, departamento_id = ? WHERE id = ?';
           connection.query(query, [nombre, departamento_id, id], (err, results) => {
               if (err) throw err;

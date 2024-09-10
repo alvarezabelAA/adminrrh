@@ -54,7 +54,6 @@
           <small *ngIf="empresaForm.get('correo')?.errors?.['email']">El formato del correo es incorrecto.</small>
         </div>
       </div>
-      <!-- País, Departamento, Municipio -->
       <div>
         <label for="pais_id">País <span class="text-red-500">*</span></label>
         <select id="pais_id" formControlName="pais_id"
@@ -90,10 +89,6 @@
           <small *ngIf="empresaForm.get('municipio_id')?.errors?.['required']">El municipio es obligatorio.</small>
         </div>
       </div>
-
-
-
-      <!-- Botones -->
       <div class="flex space-x-4">
         <button type="submit" class="flex justify-center items-center px-4 py-1 bg-blue-500 text-white rounded-lg" [disabled]="empresaForm.invalid">
           <span class="material-icons mr-1 text-base shrink-0">{{ editMode ? 'edit' : 'note_add' }}</span>

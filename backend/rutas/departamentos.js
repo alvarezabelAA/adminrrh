@@ -33,12 +33,10 @@ router.get('/', async (req, res) => {
 
 
 // POST: Agregar un departamento
-// POST: Agregar un departamento
 router.post('/', async (req, res) => {
   try {
       const { nombre, pais_id } = req.body;
 
-      // Verificar si el país existe
       const checkCountryQuery = 'SELECT id FROM paises WHERE id = ?';
       connection.query(checkCountryQuery, [pais_id], (err, results) => {
           if (err) {
@@ -48,7 +46,6 @@ router.post('/', async (req, res) => {
               return res.status(400).json({ message: 'El país especificado no existe' });
           }
 
-          // Si el país existe, inserta el departamento
           const query = 'INSERT INTO departamentos (nombre, pais_id) VALUES (?, ?)';
           connection.query(query, [nombre, pais_id], (err, results) => {
               if (err) {
@@ -69,7 +66,6 @@ router.put('/:id', async (req, res) => {
       const { nombre, pais_id } = req.body;
       const { id } = req.params;
 
-      // Verificar si el pais_id existe en la tabla de paises
       const checkCountryQuery = 'SELECT id FROM paises WHERE id = ?';
       console.log(id, nombre, pais_id);
       connection.query(checkCountryQuery, [pais_id], (err, countryResults) => {
@@ -80,7 +76,6 @@ router.put('/:id', async (req, res) => {
               return res.status(400).json({ message: 'El país especificado no existe' });
           }
 
-          // Si el pais_id es válido, proceder con la actualización
           const query = 'UPDATE departamentos SET nombre = ?, pais_id = ? WHERE id = ?';
           console.log(query);
           connection.query(query, [nombre, pais_id, id], (err, results) => {
@@ -105,7 +100,6 @@ router.delete('/:id', async (req, res) => {
       const query = 'DELETE FROM departamentos WHERE id = ?';
       connection.query(query, [id], (err, results) => {
           if (err) {
-              // Manejo específico del error de clave externa referenciada
               if (err.errno === 1451) {
                   return res.status(400).json({
                       message: 'No se puede eliminar el departamento porque está relacionado con otras entidades.',

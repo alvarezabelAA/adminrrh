@@ -28,7 +28,7 @@ export class ColaboradoresComponent implements OnInit {
     {
       header: 'Empresas',
       key: 'empresas',
-      type: 'button', // Indicador de que esta columna contendrá un botón
+      type: 'button',
       action: 'gotToColaboradores',
       label: 'business',
       badgeNum: 2
@@ -48,7 +48,6 @@ export class ColaboradoresComponent implements OnInit {
     });
   }
 
-  // Función para obtener los colaboradores desde el backend
   fetchColaboradores() {
     this.http.get<any[]>('http://localhost:3000/api/colaboradores').subscribe({
       next: (response) => {
@@ -62,7 +61,6 @@ export class ColaboradoresComponent implements OnInit {
     });
   }
 
-  // Insertar o actualizar colaborador
   onSubmit() {
     if (this.colaboradorForm.invalid) {
       return;
@@ -71,7 +69,6 @@ export class ColaboradoresComponent implements OnInit {
     const colaboradorData = this.colaboradorForm.value;
 
     if (this.editMode && this.selectedColaboradorId) {
-      // Actualizar colaborador
       this.http.put(`http://localhost:3000/api/colaboradores/${this.selectedColaboradorId}`, colaboradorData).subscribe({
         next: () => {
           this.notifier.notify('success', 'Colaborador actualizado con éxito');
@@ -84,7 +81,6 @@ export class ColaboradoresComponent implements OnInit {
         }
       });
     } else {
-      // Insertar nuevo colaborador
       this.http.post('http://localhost:3000/api/colaboradores', colaboradorData).subscribe({
         next: () => {
           this.notifier.notify('success', 'Colaborador agregado con éxito');
@@ -99,7 +95,6 @@ export class ColaboradoresComponent implements OnInit {
     }
   }
 
-  // Método para editar colaborador
   onEdit(item: any) {
     this.editMode = true;
     this.selectedColaboradorId = item.id;
@@ -107,7 +102,6 @@ export class ColaboradoresComponent implements OnInit {
     this.showModal = true;
   }
 
-  // Método para eliminar colaborador
   onDelete(itemId: any) {
     if (confirm('¿Estás seguro de que deseas eliminar este colaborador?')) {
       this.http.delete(`http://localhost:3000/api/colaboradores/${itemId.id}`).subscribe({
@@ -116,7 +110,6 @@ export class ColaboradoresComponent implements OnInit {
           this.fetchColaboradores();
         },
         error: (error) => {
-          // Verificar si el error tiene un mensaje específico relacionado con relaciones activas
           if (error.status === 400 && error.error.message.includes('relaciones activas')) {
             this.notifier.notify('error', 'No se puede eliminar el colaborador porque tiene relaciones activas con empresas');
           } else if (error.status === 404) {
@@ -124,20 +117,17 @@ export class ColaboradoresComponent implements OnInit {
           } else {
             this.notifier.notify('error', 'Error al eliminar el colaborador');
           }
-          console.error('Error al eliminar el colaborador:', error);
         }
       });
     }
   }
 
 
-  // Método para agregar un nuevo colaborador
   onNew() {
     this.resetForm();
     this.showModal = true;
   }
 
-  // Método para resetear el formulario
   resetForm() {
     this.colaboradorForm.reset();
     this.editMode = false;

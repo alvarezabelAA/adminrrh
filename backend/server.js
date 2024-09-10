@@ -9,7 +9,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// // Rutas
+// Rutas
 const paisesRoutes = require('./rutas/paises');
 const departamentosRoutes = require('./rutas/departamentos');
 const municipiosRoutes = require('./rutas/municipios');
@@ -17,7 +17,7 @@ const empresasRoutes = require('./rutas/empresas');
 const colaboradoresRoutes = require('./rutas/colaboradores');
 const empresasColab = require('./rutas/empresasColab');
 
-// // Usar las rutas
+// Usar las rutas
 app.use('/api/paises', paisesRoutes);
 app.use('/api/departamentos', departamentosRoutes);
 app.use('/api/municipios', municipiosRoutes);

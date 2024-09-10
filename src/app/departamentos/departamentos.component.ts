@@ -21,25 +21,23 @@ interface DepartamentoResponse {
   styleUrls: ['./departamentos.component.css']
 })
 export class DepartamentosComponent implements OnInit {
-  // Datos para la tabla
   tableData: any[] = [];
   departamentoId: number = 0;
   filters: any = {};
 
-  @Input() showModal: boolean = false;  // Mostrar/ocultar el modal
-  @Input() editMode: boolean = false;  // Editar o crear nuevo
-  @Input() paisId: number = 0;  // Recibir el ID del país desde otra pantalla
+  @Input() showModal: boolean = false;
+  @Input() editMode: boolean = false;
+  @Input() paisId: number = 0;
   departamentoForm!: FormGroup;
 
-  // Definición de columnas
   tableColumns = [
     { header: 'Nombre Departamento', key: 'nombre' },
     { header: 'Nombre País', key: 'pais_nombre' },
     {
       header: 'Municipios',
       key: 'municipios',
-      type: 'button', // Indicador de que esta columna contendrá un botón
-      action: 'goToMunicipios', // El nombre de la acción que quieres realizar
+      type: 'button',
+      action: 'goToMunicipios',
       label: 'business',
       badgeNum: 1
     }
@@ -77,14 +75,12 @@ export class DepartamentosComponent implements OnInit {
       this.fetchDepartamentos(this.paisId);
     }
 
-    // Inicializar el formulario con el pais_id deshabilitado
     this.departamentoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
-      pais_id: [{ value: this.paisId, disabled: true }, Validators.required],  // ID del país, deshabilitado
+      pais_id: [{ value: this.paisId, disabled: true }, Validators.required],
     });
   }
 
-  // Obtener departamentos
   fetchDepartamentos(id_pais?: number) {
     let url = 'http://localhost:3000/api/departamentos';
     if (id_pais) {
@@ -105,7 +101,6 @@ export class DepartamentosComponent implements OnInit {
     });
   }
 
-  // Manejar el envío del formulario
   onSubmit() {
     if (this.departamentoForm.valid) {
       const departamentoData = this.departamentoForm.value;
@@ -116,12 +111,11 @@ export class DepartamentosComponent implements OnInit {
           nombre: departamentoData.nombre,
           pais_id: this.paisId
         }
-        // Actualizar el departamento
         this.http.put(`http://localhost:3000/api/departamentos/${this.departamentoId}`, params).subscribe({
           next: (response) => {
             this.notifier.notify('success', 'Departamento actualizado correctamente.');
             this.resetForm();
-            this.fetchDepartamentos(this.paisId);  // Actualizar la tabla de departamentos
+            this.fetchDepartamentos(this.paisId);
           },
           error: (error) => {
             this.notifier.notify('error', 'Error al actualizar el departamento.');
@@ -129,7 +123,6 @@ export class DepartamentosComponent implements OnInit {
           }
         });
       } else {
-        // Insertar un nuevo departamento
         const params = {
           nombre: departamentoData.nombre,
           pais_id: this.paisId
@@ -139,11 +132,10 @@ export class DepartamentosComponent implements OnInit {
           next: (response) => {
             this.notifier.notify('success', 'Departamento agregado correctamente.');
             this.resetForm();
-            this.fetchDepartamentos(this.paisId);  // Actualizar la tabla de departamentos
+            this.fetchDepartamentos(this.paisId);
           },
           error: (error) => {
             this.notifier.notify('error', 'Error al agregar el departamento.');
-            console.error('Error del servidor:', error);
           }
         });
       }
@@ -152,34 +144,32 @@ export class DepartamentosComponent implements OnInit {
     }
   }
 
-  // Eliminar un departamento (DELETE)
   deleteDepartamento(departamentoId: any) {
     const url = `http://localhost:3000/api/departamentos/${departamentoId.id}`;
     this.http.delete<DepartamentoResponse>(url).subscribe({
       next: (response: DepartamentoResponse) => {
-        console.log('Departamento eliminado:', response);
+        // console.log('Departamento eliminado:', response);
         this.notifier.notify('success', 'Departamento eliminado correctamente.');
         this.fetchDepartamentos(this.paisId);  // Actualizar la tabla
       },
       error: (error) => {
         const errorMessage = error.error?.message || 'Error al eliminar el departamento.';
         this.notifier.notify('error', errorMessage);
-        console.error('Error al eliminar el departamento:', error);
+        // console.error('Error al eliminar el departamento:', error);
       }
     });
 }
 
 
-  // Métodos para manejar las acciones
   onEdit(item: any) {
     console.log('Editar', item);
-    this.departamentoId = item.id;  // Guardar el ID del departamento
+    this.departamentoId = item.id;
     this.departamentoForm.patchValue({
       nombre: item.nombre,
       pais_id: item.pais_id
-    });  // Rellenar el formulario con los datos del departamento
-    this.editMode = true;  // Cambiar a modo de edición
-    this.showModal = true;  // Mostrar el modal
+    });
+    this.editMode = true;
+    this.showModal = true;
   }
 
   onDelete(itemId: number) {
@@ -190,13 +180,12 @@ export class DepartamentosComponent implements OnInit {
   }
 
   onNew() {
-    console.log('Nuevo departamento');
+    // console.log('Nuevo departamento');
     this.resetForm();
     this.showModal = true;
-    this.editMode = false;  // Cambiar a modo de nuevo
+    this.editMode = false;
   }
 
-  // Reiniciar el formulario y ocultar el modal
   resetForm() {
     this.departamentoForm.reset();
     this.showModal = false;

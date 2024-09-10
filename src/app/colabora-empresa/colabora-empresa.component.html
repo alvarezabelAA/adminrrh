@@ -3,7 +3,6 @@
 <div class="container mx-auto mt-10">
   <h2 class="text-3xl font-bold text-center">Empresas del Colaborador</h2>
 
-  <!-- Tabla de empresas relacionadas al colaborador -->
   <app-table
     [data]="tableData"
     [columns]="tableColumns"
@@ -12,7 +11,6 @@
     (newEntry)="onNew()">
   </app-table>
 
-  <!-- Modal para asignar o editar una empresa -->
   <app-modal [show]="showModal" [title]="editMode ? 'Editar Empresa' : 'Asignar Empresa'" (closeModal)="resetForm()">
     <form [formGroup]="empresaForm" (ngSubmit)="onSubmit()" class="space-y-4">
       <div>
@@ -27,8 +25,6 @@
           <small *ngIf="empresaForm.get('empresa_id')?.errors?.['required']">La empresa es obligatoria.</small>
         </div>
       </div>
-
-      <!-- Botones -->
       <div class="flex space-x-4 mt-2">
         <button type="submit" class="flex justify-center items-center px-4 py-1 bg-blue-500 text-white rounded-lg" [disabled]="empresaForm.invalid">
           <span class="material-icons mr-1 text-base shrink-0">{{ editMode ? 'edit' : 'note_add' }}</span>

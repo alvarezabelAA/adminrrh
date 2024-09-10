@@ -4,18 +4,17 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule],  // Agrega RouterModule aquí
+  imports: [CommonModule],  
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent {
-  @Input() show: boolean = false;       // Para mostrar/ocultar el modal
-  @Input() title: string = '';          // Título del modal
-  @Input() size: string = 'medium';     // Tamaño del modal: small, medium, large, extra-large
+  @Input() show: boolean = false;
+  @Input() title: string = '';
+  @Input() size: string = 'medium';
 
-  @Output() closeModal = new EventEmitter<void>(); // Evento para cerrar el modal
+  @Output() closeModal = new EventEmitter<void>();
 
-  // Función para cerrar el modal
   close() {
     this.closeModal.emit();
   }
@@ -23,10 +22,10 @@ export class ModalComponent {
   // Clases dinámicas según el tamaño
   getSizeClasses(): string {
     const sizeClasses: any = {
-      small: 'w-full sm:w-1/4', // En pantallas pequeñas (móviles), ocupa todo el ancho
-      medium: 'w-full sm:w-1/2', // En pantallas pequeñas, ocupa todo el ancho; en medianas, 50%
-      large: 'w-full sm:w-3/4',  // En pantallas pequeñas, ocupa todo el ancho; en grandes, 75%
-      'extra-large': 'w-full sm:max-w-6xl' // En pantallas pequeñas, ocupa todo el ancho; en grandes, tamaño extra
+      small: 'w-full sm:w-1/4',
+      medium: 'w-full sm:w-1/2',
+      large: 'w-full sm:w-3/4',
+      'extra-large': 'w-full sm:max-w-6xl'
     };
     return sizeClasses[this.size] || sizeClasses['medium'];
   }

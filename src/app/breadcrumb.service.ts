@@ -38,11 +38,9 @@ export class BreadcrumbService {
       const label = child.snapshot.data['breadcrumb'];
       const parent = child.snapshot.data['parent'];
 
-      // Captura tanto paramMap como queryParams
-      const queryParams = child.snapshot.queryParams;  // Captura los queryParams actuales
+      const queryParams = child.snapshot.queryParams;
       let params: { [key: string]: string | null } = {};
 
-      // Verifica si hay parámetros en paramMap
       if (child.snapshot.paramMap.keys.length > 0) {
         params = child.snapshot.paramMap.keys.reduce((acc: { [key: string]: string | null }, key: string) => {
           acc[key] = child.snapshot.paramMap.get(key);

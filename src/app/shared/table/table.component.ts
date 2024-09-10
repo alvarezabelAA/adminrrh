@@ -110,8 +110,6 @@ export class TableComponent {
       this.goToMunicipios(itemId);
     } else if (action === 'gotToColaboradores') {
       this.gotToColaboradores(itemId.id);
-    }else {
-      console.warn('No action defined for this column.');
     }
   }
 
@@ -126,19 +124,19 @@ export class TableComponent {
 
 
   goToDepartamentos(itemId: number) {
-    console.log('Navegar a departamentos del item con ID:', itemId);
+    // console.log('Navegar a departamentos del item con ID:', itemId);
     this.router.navigate(['/departamentos', itemId]);
   }
 
   goToMunicipios(itemId: any) {
-    console.log('Navegar a municipios del item con ID:', itemId);
+    // console.log('Navegar a municipios del item con ID:', itemId);
     this.router.navigate(['/municipios'], {
       queryParams: { ids: JSON.stringify(itemId) }
     });
   }
 
   gotToColaboradores(itemId: any) {
-    console.log('Navegar a municipios del item con ID:', itemId);
+    // console.log('Navegar a municipios del item con ID:', itemId);
     this.router.navigate(['/colabora-empresa', itemId]);
   }
 

@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
     try {
         const { nombre } = req.body;
 
-        // Validar que el nombre no esté vacío
         if (!nombre || nombre.trim() === '') {
             return res.status(400).json({ message: 'El nombre del país es obligatorio.' });
         }
@@ -49,8 +48,6 @@ router.put('/:id', async (req, res) => {
     try {
         const { nombre } = req.body;
         const { id } = req.params;
-
-        // Validar que el nombre no esté vacío
         if (!nombre || nombre.trim() === '') {
             return res.status(400).json({ message: 'El nombre del país es obligatorio.' });
         }

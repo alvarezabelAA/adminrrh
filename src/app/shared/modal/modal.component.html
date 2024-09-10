@@ -1,17 +1,13 @@
 <div *ngIf="show" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ease-in-out">
-  <!-- Animación al aparecer -->
   <div [ngClass]="getSizeClasses()" class="bg-white rounded-lg shadow-lg relative p-6 transform transition-transform duration-300 ease-in-out scale-95 sm:scale-100">
-    <!-- Header del Modal con botón de cerrar -->
     <div class="flex justify-between items-center border-b pb-4 mb-4">
       <h2 class="text-xl font-medium">{{ title }}</h2>
       <button (click)="close()" class="text-gray-500 hover:text-red-500 focus:outline-none transition-transform transform hover:scale-110">
-        <span class="material-icons text-2xl">&#10005;</span> <!-- Icono X minimalista -->
+        <span class="material-icons text-2xl">&#10005;</span> 
       </button>
     </div>
-
-    <!-- Contenido dinámico -->
     <div class="space-y-4">
-      <ng-content></ng-content> <!-- Para insertar contenido dinámico -->
+      <ng-content></ng-content>
     </div>
   </div>
 </div>

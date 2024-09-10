@@ -80,7 +80,6 @@ router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Verificar si el colaborador tiene relaciones con empresas
     const checkRelationQuery = 'SELECT COUNT(*) AS relationCount FROM colaboradores_empresas WHERE colaborador_id = ?';
     connection.query(checkRelationQuery, [id], (err, relationResults) => {
       if (err) {
@@ -94,7 +93,6 @@ router.delete('/:id', async (req, res) => {
         return res.status(400).json({ message: 'No se puede eliminar el colaborador, tiene relaciones activas con empresas' });
       }
 
-      // Si no hay relaciones, proceder con la eliminación del colaborador
       const colaboradorQuery = 'DELETE FROM colaboradores WHERE id = ?';
       connection.query(colaboradorQuery, [id], (err, results) => {
         if (err) {

@@ -5,7 +5,7 @@ const connection = require('../database');
 // GET: Obtener un colaborador por su id_colaborador con el número de empresas a las que pertenece
 router.get('/:id', async (req, res) => {
   try {
-    const { id } = req.params;  // Obtener el id_colaborador desde los parámetros de la URL
+    const { id } = req.params;
 
     const query = `
       SELECT
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
         return res.status(404).json({ message: 'Empresas no encontradas para el colaborador' });
       }
 
-      res.json(results);  // Enviar los detalles del colaborador, empresas, y ubicación (país, departamento, municipio)
+      res.json(results);
     });
   } catch (error) {
     res.status(500).json({ message: 'Error inesperado en la consulta', error: error.message });
@@ -45,7 +45,6 @@ router.post('/asignar', async (req, res) => {
   try {
     const { colaborador_id, empresa_id } = req.body;
 
-    // Verificar que ambos IDs existan y que la relación no exista previamente
     const checkQuery = `
       SELECT
         (SELECT COUNT(*) FROM colaboradores WHERE id = ?) AS colaborador_exists,
@@ -59,17 +58,14 @@ router.post('/asignar', async (req, res) => {
 
       const { colaborador_exists, empresa_exists, relacion_exists } = results[0];
 
-      // Validar si el colaborador o la empresa no existen
       if (!colaborador_exists || !empresa_exists) {
         return res.status(400).json({ message: 'Colaborador o empresa no válidos' });
       }
 
-      // Verificar si ya existe la relación entre el colaborador y la empresa
       if (relacion_exists > 0) {
         return res.status(400).json({ message: 'El colaborador ya está asignado a esta empresa.' });
       }
 
-      // Si la relación no existe, insertar en la tabla intermedia
       const insertQuery = 'INSERT INTO colaboradores_empresas (colaborador_id, empresa_id) VALUES (?, ?)';
       connection.query(insertQuery, [colaborador_id, empresa_id], (err, results) => {
         if (err) {
@@ -90,7 +86,6 @@ router.put('/actualizar/:colaborador_id', async (req, res) => {
     const { empresa_id } = req.body;
     const { colaborador_id } = req.params;
 
-    // Actualizar la relación
     const updateQuery = 'UPDATE colaboradores_empresas SET empresa_id = ? WHERE colaborador_id = ?';
     connection.query(updateQuery, [empresa_id, colaborador_id], (err, results) => {
       if (err) {
@@ -111,7 +106,6 @@ router.delete('/desasignar', async (req, res) => {
   try {
     const { colaborador_id, empresa_id } = req.body;
 
-    // Eliminar la relación de la tabla intermedia
     const deleteQuery = 'DELETE FROM colaboradores_empresas WHERE colaborador_id = ? AND empresa_id = ?';
     connection.query(deleteQuery, [colaborador_id, empresa_id], (err, results) => {
       if (err) {

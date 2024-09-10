@@ -28,12 +28,10 @@ router.post('/', async (req, res) => {
     try {
         const { nombre_comercial, razon_social, nit, telefono, correo, pais_id, departamento_id, municipio_id } = req.body;
 
-        // Validar campos requeridos
         if (!nombre_comercial || !razon_social || !nit || !telefono || !correo || !pais_id || !departamento_id || !municipio_id) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
         }
 
-        // Verificar que pais, departamento y municipio existen
         const checkRelationsQuery = `
             SELECT (SELECT COUNT(*) FROM paises WHERE id = ?) AS pais_exists,
                    (SELECT COUNT(*) FROM departamentos WHERE id = ?) AS departamento_exists,
@@ -49,7 +47,6 @@ router.post('/', async (req, res) => {
                 return res.status(400).json({ message: 'País, departamento o municipio no válidos.' });
             }
 
-            // Si las relaciones son válidas, insertar la empresa
             const query = `
                 INSERT INTO empresas (nombre_comercial, razon_social, nit, telefono, correo, pais_id, departamento_id, municipio_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -71,12 +68,10 @@ router.put('/:id', async (req, res) => {
         const { nombre_comercial, razon_social, nit, telefono, correo, pais_id, departamento_id, municipio_id } = req.body;
         const { id } = req.params;
 
-        // Validar campos requeridos
         if (!nombre_comercial || !razon_social || !nit || !telefono || !correo || !pais_id || !departamento_id || !municipio_id) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
         }
 
-        // Verificar que pais, departamento y municipio existen
         const checkRelationsQuery = `
             SELECT (SELECT COUNT(*) FROM paises WHERE id = ?) AS pais_exists,
                    (SELECT COUNT(*) FROM departamentos WHERE id = ?) AS departamento_exists,
@@ -92,7 +87,6 @@ router.put('/:id', async (req, res) => {
                 return res.status(400).json({ message: 'País, departamento o municipio no válidos.' });
             }
 
-            // Si las relaciones son válidas, actualizar la empresa
             const query = `
                 UPDATE empresas SET nombre_comercial = ?, razon_social = ?, nit = ?, telefono = ?, correo = ?, pais_id = ?, departamento_id = ?, municipio_id = ?
                 WHERE id = ?`;
@@ -118,13 +112,11 @@ router.delete('/:id', async (req, res) => {
       const query = 'DELETE FROM empresas WHERE id = ?';
       connection.query(query, [id], (err, results) => {
           if (err) {
-              // Manejar el error de que la empresa está referenciada en otras tablas
               if (err.code === 'ER_ROW_IS_REFERENCED_2') {
                   return res.status(400).json({
                       message: 'No se puede eliminar la empresa porque tiene datos relacionados en otras tablas.'
                   });
               }
-              // Otros errores
               return res.status(500).json({ message: 'Error al eliminar la empresa', error: err.message });
           }
           if (results.affectedRows === 0) {
