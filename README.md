@@ -1,28 +1,73 @@
 # PdcApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
+**PdcApp** es una aplicación de gestión de recursos humanos desarrollada con Angular. El objetivo principal es administrar la información de colaboradores y empresas, abarcando desde el mantenimiento de países, departamentos, y municipios, hasta la gestión de relaciones entre colaboradores y las empresas a las que pertenecen.
 
-## Development server
+## Características del Proyecto
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Frontend**: Angular con TailwindCSS para un diseño de interfaz moderno y responsivo.
+- **Backend**: Node.js con una base de datos MySQL.
+- **Funcionalidades CRUD**: Permite la creación, edición, eliminación y visualización de registros para países, departamentos, municipios, empresas y colaboradores.
+- **Flujo de Navegación**: Los módulos de países, departamentos y municipios están enlazados de manera jerárquica. Además, los colaboradores cuentan con una relación directa con las empresas, mostrando la cantidad de empresas a las que pertenecen.
 
-## Code scaffolding
+## Instalación
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Clona el repositorio:
 
-## Build
+   ```bash
+   git clone https://github.com/alvarezabelAA/adminrrh.git
+   ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+2. Navega a la carpeta del proyecto e instala las dependencias:
 
-## Running unit tests
+   ```bash
+   cd adminrrh
+   npm install
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+3. Configura la base de datos:
+   - Dentro de la carpeta `script`, encontrarás el script SQL para la creación de la base de datos.
+   - Copia el script en MySQL Workbench y ejecuta las sentencias. Puedes omitir los `INSERT` si deseas comenzar con una base de datos limpia.
 
-## Running end-to-end tests
+4. Configura el backend:
+   - Navega a la carpeta `backend` e instala las dependencias:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+     ```bash
+     cd backend
+     npm install
+     ```
 
-## Further help
+   - Modifica el archivo `database.js` con la configuración de conexión a tu base de datos.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-# adminrrh
+5. Inicia el servidor backend:
+
+   ```bash
+   node server.js
+   ```
+
+6. Inicia el servidor de desarrollo en Angular:
+
+   ```bash
+   ng serve
+   ```
+
+   Accede a la aplicación en `http://localhost:4200/`.
+
+## Pruebas
+
+- Ejecuta las pruebas unitarias con:
+
+   ```bash
+   ng test
+   ```
+
+- Ejecuta las pruebas end-to-end con:
+
+   ```bash
+   ng e2e
+   ```
+
+## Documentación
+
+La documentación completa del sistema, incluyendo la arquitectura, el diseño de la base de datos y los detalles de los mantenimientos CRUD, está disponible en el repositorio. Asegúrate de consultarla para obtener información más detallada sobre la implementación.
+
+---
