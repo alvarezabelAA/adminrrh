@@ -1,0 +1,14 @@
+<nav class="bg-gray-50 p-2 mb-2 rounded-md shadow-sm">
+  <ol class="flex space-x-1 text-sm text-gray-600">
+    <li *ngFor="let breadcrumb of breadcrumbs; let isLast = last">
+      <a
+        [routerLink]="[breadcrumb.url, breadcrumb.params]"
+        [queryParams]="breadcrumb.queryParams"
+        class="hover:underline"
+        [ngClass]="{ 'text-blue-500 font-medium': isLast, 'text-gray-600': !isLast }">
+        {{ breadcrumb.label }}
+      </a>
+      <span *ngIf="!isLast" class="text-gray-400">/</span>
+    </li>
+  </ol>
+</nav>

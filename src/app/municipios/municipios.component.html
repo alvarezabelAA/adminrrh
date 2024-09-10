@@ -1,0 +1,51 @@
+<notifier-container></notifier-container>
+
+<div class="container mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-center">Municipios</h2>
+
+  <!-- Tabla de municipios -->
+  <app-table
+    [data]="tableData"
+    [columns]="tableColumns"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+    (newEntry)="onNew()">
+  </app-table>
+
+  <!-- Modal para agregar o editar un municipio -->
+  <app-modal [show]="showModal" [title]="editMode ? 'Editar Municipio' : 'Ingresar Municipio'" [size]="'medium'" (closeModal)="resetForm()">
+    <form [formGroup]="municipioForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+      <!-- Campo para el nombre del municipio -->
+      <div>
+        <label for="nombre" class="block text-sm font-medium text-gray-700">
+          Nombre del Municipio <span class="text-red-500">*</span>
+        </label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+        <div *ngIf="municipioForm.get('nombre')?.invalid && municipioForm.get('nombre')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="municipioForm.get('nombre')?.errors?.['required']">El nombre es obligatorio</small>
+          <small *ngIf="municipioForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</small>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="flex space-x-4">
+        <button type="submit" class="flex justify-center items-center px-4 py-1 bg-blue-500 text-white rounded-lg" [disabled]="municipioForm.invalid">
+          <span class="material-icons mr-1 text-base shrink-0">{{ editMode ? 'edit' : 'note_add' }}</span>
+          {{ editMode ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button type="button" class="flex justify-center items-center px-4 py-1 bg-red-500 text-white rounded-lg" (click)="resetForm()">
+          <span class="material-icons mr-1 text-base shrink-0">block</span>
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+  </app-modal>
+
+</div>

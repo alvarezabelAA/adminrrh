@@ -1,0 +1,18 @@
+nav ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ol li {
+  display: inline;
+}
+
+nav ol li a {
+  text-decoration: none;
+}
+
+nav ol li a.font-bold {
+  font-weight: bold;
+  cursor: default;
+}

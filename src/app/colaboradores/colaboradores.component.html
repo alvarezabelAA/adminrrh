@@ -1,0 +1,63 @@
+<notifier-container></notifier-container>
+
+<div class="container mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-center">Colaboradores</h2>
+
+  <!-- Tabla de colaboradores -->
+  <app-table
+    [data]="tableData"
+    [columns]="tableColumns"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+    (newEntry)="onNew()">
+  </app-table>
+
+  <!-- Modal para agregar/editar colaborador -->
+  <app-modal [show]="showModal" [title]="editMode ? 'Editar Colaborador' : 'Agregar Colaborador'" (closeModal)="resetForm()">
+    <form [formGroup]="colaboradorForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="nombre_completo">Nombre Completo <span class="text-red-500">*</span></label>
+        <input class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="nombre_completo" formControlName="nombre_completo" type="text" />
+        <div *ngIf="colaboradorForm.get('nombre_completo')?.invalid && colaboradorForm.get('nombre_completo')?.touched">
+          <small class="text-red-500">El nombre es obligatorio.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="edad">Edad <span class="text-red-500">*</span></label>
+        <input class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="edad" formControlName="edad" type="number" />
+        <div *ngIf="colaboradorForm.get('edad')?.invalid && colaboradorForm.get('edad')?.touched">
+          <small class="text-red-500">La edad es obligatoria y debe ser mayor a 18.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="telefono">Teléfono <span class="text-red-500">*</span></label>
+        <input class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="telefono" formControlName="telefono" type="text" />
+        <div *ngIf="colaboradorForm.get('telefono')?.invalid && colaboradorForm.get('telefono')?.touched">
+          <small class="text-red-500">El teléfono es obligatorio.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="correo">Correo <span class="text-red-500">*</span></label>
+        <input class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="correo" formControlName="correo" type="email" />
+        <div *ngIf="colaboradorForm.get('correo')?.invalid && colaboradorForm.get('correo')?.touched">
+          <small class="text-red-500">El correo es obligatorio y debe ser válido.</small>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex space-x-4 mt-2">
+        <button type="submit" class="flex justify-center items-center px-4 py-1 bg-blue-500 text-white rounded-lg" [disabled]="colaboradorForm.invalid">
+          <span class="material-icons mr-1 text-base shrink-0">{{ editMode ? 'edit' : 'note_add' }}</span>
+          {{ editMode ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button type="button" class="flex justify-center items-center px-4 py-1 bg-red-500 text-white rounded-lg" (click)="resetForm()">
+          <span class="material-icons mr-1 text-base shrink-0">block</span>
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </app-modal>
+</div>
