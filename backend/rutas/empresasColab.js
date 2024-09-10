@@ -8,29 +8,34 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;  // Obtener el id_colaborador desde los parámetros de la URL
 
     const query = `
-      SELECT c.id, c.nombre_completo, c.edad, c.telefono, c.correo,
-       e.id AS empresa_id, e.nombre_comercial, e.razon_social, e.telefono AS empresa_telefono
+      SELECT
+        c.id, c.nombre_completo, c.edad, c.telefono, c.correo,
+        e.id AS empresa_id, e.nombre_comercial, e.razon_social, e.telefono AS empresa_telefono,
+        p.nombre AS pais_nombre, d.nombre AS departamento_nombre, m.nombre AS municipio_nombre
       FROM colaboradores AS c
       INNER JOIN colaboradores_empresas AS ce ON c.id = ce.colaborador_id
       INNER JOIN empresas AS e ON ce.empresa_id = e.id
+      LEFT JOIN paises AS p ON e.pais_id = p.id
+      LEFT JOIN departamentos AS d ON e.departamento_id = d.id
+      LEFT JOIN municipios AS m ON e.municipio_id = m.id
       WHERE c.id = ?
     `;
 
     connection.query(query, [id], (err, results) => {
       if (err) {
-        return res.status(500).json({ message: 'Error al obtener el empresas', error: err.message });
+        return res.status(500).json({ message: 'Error al obtener el colaborador y sus empresas', error: err.message });
       }
       if (results.length === 0) {
-        return res.status(404).json({ message: 'Empresas no encontradas' });
+        return res.status(404).json({ message: 'Empresas no encontradas para el colaborador' });
       }
 
-
-      res.json(results);  // Enviar los detalles del colaborador y las empresas
+      res.json(results);  // Enviar los detalles del colaborador, empresas, y ubicación (país, departamento, municipio)
     });
   } catch (error) {
     res.status(500).json({ message: 'Error inesperado en la consulta', error: error.message });
   }
 });
+
 
 
 

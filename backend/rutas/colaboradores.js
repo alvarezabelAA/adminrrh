@@ -77,34 +77,41 @@ router.put('/:id', async (req, res) => {
 
 // DELETE: Eliminar un colaborador y su relación con una empresa
 router.delete('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        // Primero eliminamos la relación en la tabla intermedia
-        const relacionQuery = 'DELETE FROM colaboradores_empresas WHERE colaborador_id = ?';
-        connection.query(relacionQuery, [id], (err, results) => {
-            if (err) {
-                console.error('Error al eliminar relación colaborador-empresa:', err.message);
-                return res.status(500).json({ message: 'Error al eliminar relación colaborador-empresa', error: err.message });
-            }
+    // Verificar si el colaborador tiene relaciones con empresas
+    const checkRelationQuery = 'SELECT COUNT(*) AS relationCount FROM colaboradores_empresas WHERE colaborador_id = ?';
+    connection.query(checkRelationQuery, [id], (err, relationResults) => {
+      if (err) {
+        console.error('Error al verificar relaciones del colaborador:', err.message);
+        return res.status(500).json({ message: 'Error al verificar relaciones del colaborador', error: err.message });
+      }
 
-            // Luego eliminamos al colaborador
-            const colaboradorQuery = 'DELETE FROM colaboradores WHERE id = ?';
-            connection.query(colaboradorQuery, [id], (err, results) => {
-                if (err) {
-                    console.error('Error al eliminar colaborador:', err.message);
-                    return res.status(500).json({ message: 'Error al eliminar colaborador', error: err.message });
-                }
-                if (results.affectedRows === 0) {
-                    return res.status(404).json({ message: 'Colaborador no encontrado' });
-                }
-                res.json({ message: 'Colaborador eliminado con éxito', id });
-            });
-        });
-    } catch (error) {
-        console.error('Error inesperado al eliminar colaborador:', error.message);
-        res.status(500).json({ message: 'Error inesperado al eliminar colaborador', error: error.message });
-    }
+      const relationCount = relationResults[0].relationCount;
+
+      if (relationCount > 0) {
+        return res.status(400).json({ message: 'No se puede eliminar el colaborador, tiene relaciones activas con empresas' });
+      }
+
+      // Si no hay relaciones, proceder con la eliminación del colaborador
+      const colaboradorQuery = 'DELETE FROM colaboradores WHERE id = ?';
+      connection.query(colaboradorQuery, [id], (err, results) => {
+        if (err) {
+          console.error('Error al eliminar colaborador:', err.message);
+          return res.status(500).json({ message: 'Error al eliminar colaborador', error: err.message });
+        }
+        if (results.affectedRows === 0) {
+          return res.status(404).json({ message: 'Colaborador no encontrado' });
+        }
+        res.json({ message: 'Colaborador eliminado con éxito', id });
+      });
+    });
+  } catch (error) {
+    console.error('Error inesperado al eliminar colaborador:', error.message);
+    res.status(500).json({ message: 'Error inesperado al eliminar colaborador', error: error.message });
+  }
 });
+
 
 module.exports = router;

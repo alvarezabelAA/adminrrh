@@ -26,6 +26,7 @@
     <!-- Menú desplegable para pantallas móviles -->
     <div *ngIf="isMenuOpen" id="mobile-menu" class="md:hidden mt-4">
       <ul class="flex flex-col space-y-2">
+        <li><a [routerLink]="['/']" class="text-white hover:text-gray-300">Inicio</a></li>
         <li><a [routerLink]="['/paises']" class="text-white block hover:text-gray-300">Países</a></li>
         <li><a [routerLink]="['/empresas']" class="text-white block hover:text-gray-300">Empresas</a></li>
         <li><a [routerLink]="['/colaboradores']" class="text-white block hover:text-gray-300">Colaboradores</a></li>

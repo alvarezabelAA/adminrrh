@@ -108,20 +108,28 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   // Método para eliminar colaborador
-  onDelete(itemId: number) {
+  onDelete(itemId: any) {
     if (confirm('¿Estás seguro de que deseas eliminar este colaborador?')) {
-      this.http.delete(`http://localhost:3000/api/colaboradores/${itemId}`).subscribe({
+      this.http.delete(`http://localhost:3000/api/colaboradores/${itemId.id}`).subscribe({
         next: () => {
           this.notifier.notify('success', 'Colaborador eliminado con éxito');
           this.fetchColaboradores();
         },
         error: (error) => {
-          this.notifier.notify('error', 'Error al eliminar el colaborador');
+          // Verificar si el error tiene un mensaje específico relacionado con relaciones activas
+          if (error.status === 400 && error.error.message.includes('relaciones activas')) {
+            this.notifier.notify('error', 'No se puede eliminar el colaborador porque tiene relaciones activas con empresas');
+          } else if (error.status === 404) {
+            this.notifier.notify('error', 'Colaborador no encontrado');
+          } else {
+            this.notifier.notify('error', 'Error al eliminar el colaborador');
+          }
           console.error('Error al eliminar el colaborador:', error);
         }
       });
     }
   }
+
 
   // Método para agregar un nuevo colaborador
   onNew() {

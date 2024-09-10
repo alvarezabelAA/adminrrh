@@ -27,7 +27,10 @@ export class ColaboraEmpresaComponent implements OnInit {
   tableColumns = [
     { header: 'Nombre Comercial', key: 'nombre_comercial' },
     { header: 'Razón Social', key: 'razon_social' },
-    { header: 'Teléfono', key: 'telefono' }
+    { header: 'Teléfono', key: 'telefono' },
+    { header: 'Pais ', key: 'pais_nombre' },
+    { header: 'Departamento', key: 'departamento_nombre' },
+    { header: 'Municipio', key: 'municipio_nombre' },
   ];
 
   constructor(
@@ -68,23 +71,31 @@ export class ColaboraEmpresaComponent implements OnInit {
 
   // Función para obtener la información del colaborador y mostrar la empresa relacionada
   fetchColaborador(colaboradorId: number) {
-    console.log('Obteniendo datos del colaborador:', colaboradorId);
     this.http.get<any>(`http://localhost:3000/api/empresasColab/${colaboradorId}`).subscribe({
       next: (response) => {
         if (response) {
-          console.log('Datos del colaborador:', response);
+          // console.log('Datos del colaborador:', response);
           this.tableData = response; // Asignar las empresas relacionadas a la tabla
         } else {
-          console.log('No se encontraron empresas relacionadas para este colaborador.');
+          // console.log('No se encontraron empresas relacionadas para este colaborador.');
           this.tableData = []; // Vaciar la tabla si no hay empresas relacionadas
         }
       },
       error: (error) => {
-        console.error('Error al obtener el colaborador:', error);
-        // this.notifier.notify('error', 'Error al obtener los datos del colaborador.');  // Notificación de error
+        // console.error('Error al obtener el colaborador:', error);
+
+        if (error.status === 404) {
+          this.tableData = [];
+          // this.notifier.notify('error', 'Colaborador no encontrado o sin empresas relacionadas.');
+        } else if (error.status === 500) {
+          this.notifier.notify('error', 'Error del servidor. Por favor, intenta más tarde.');
+        } else {
+          this.notifier.notify('error', 'Error al obtener los datos del colaborador.');
+        }
       }
     });
   }
+
 
   // Abrir modal para agregar una nueva empresa
   onNew() {

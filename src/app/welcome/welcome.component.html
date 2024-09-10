@@ -1,25 +1,11 @@
-<div class="container mx-auto mt-10">
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    <!-- Card 1: Recursos Humanos -->
-    <div class="bg-white shadow-lg rounded-lg p-6 flex items-center justify-between hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer">
-      <div>
-        <h3 class="text-2xl font-bold text-gray-800">Recursos Humanos</h3>
-        <p class="text-gray-600">Gestiona empleados, nóminas y más</p>
-      </div>
-      <div class="text-blue-500 text-4xl">
-        <span class="material-icons">group</span> <!-- Puedes cambiar el ícono -->
-      </div>
-    </div>
-
-    <!-- Card 2: Colaboradores -->
-    <div class="bg-white shadow-lg rounded-lg p-6 flex items-center justify-between hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer">
-      <div>
-        <h3 class="text-2xl font-bold text-gray-800">Colaboradores</h3>
-        <p class="text-gray-600">Administra las relaciones con colaboradores</p>
-      </div>
-      <div class="text-green-500 text-4xl">
-        <span class="material-icons">work</span> <!-- Puedes cambiar el ícono -->
-      </div>
-    </div>
-  </div>
+<div class="container mx-auto min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-green-500 text-white p-4 sm:p-0">
+  <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-center">
+    Bienvenido administracion de Colaboradores
+  </h1>
+  <p class="text-base sm:text-lg lg:text-2xl mb-6 sm:mb-8 text-center max-w-lg sm:max-w-xl px-4 sm:px-0">
+    Gestion de Colaboradores y mantenimientos de Paises y Empresas
+  </p>
+  <button (click)="navigateTo('/paises')" class="bg-white text-blue-500 font-semibold py-2 px-6 sm:px-8 rounded-lg shadow-lg hover:bg-blue-500 hover:text-white transition-all duration-300 text-base sm:text-lg">
+    Empezar
+  </button>
 </div>
