@@ -52,19 +52,6 @@
 
    Accede a la aplicación en `http://localhost:4200/`.
 
-## Pruebas
-
-- Ejecuta las pruebas unitarias con:
-
-   ```bash
-   ng test
-   ```
-
-- Ejecuta las pruebas end-to-end con:
-
-   ```bash
-   ng e2e
-   ```
 
 ## Documentación
 
